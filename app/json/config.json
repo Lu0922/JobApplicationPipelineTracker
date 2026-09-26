@@ -1,0 +1,16 @@
+{
+    "config":{
+        "system_name": "Job Application Pipeline Tracker",
+        "user_documents_folder": "user_documents",
+        "package_output_folder": "applications"
+    },
+    "logging":{
+        "filename": "logs",
+        "level": "DEBUG"
+    },
+    "database":{
+        "database_folder": "database",
+        "database_file": "database.db",
+        "migration_folder": "migrations"
+    }
+}

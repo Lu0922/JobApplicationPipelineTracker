@@ -1,0 +1,14 @@
+# python virtual environments
+venv
+
+# python cache folder
+*pycache*
+
+# system logs
+*logs*
+
+# user credentials
+user_documents
+
+# output folder
+applications
