@@ -10,7 +10,7 @@ from pathlib import Path
 SRC_DIR = Path(__file__).resolve().parent
 
 # 2. Derive the True Project Root Directory: JobApplicationPipelineTracker/
-PROJECT_ROOT = SRC_DIR.parents[1]
+PROJECT_ROOT = SRC_DIR.parents[2]
 
 # 3. Structural Data Paths (Decoupled from code execution context)
 DATABASE_DIR = PROJECT_ROOT / "database"
@@ -27,3 +27,8 @@ TARGET_OUTPUT_DIR = PROJECT_ROOT / "applications_export"
 # Enforce target directory existence on boot layer
 DATABASE_DIR.mkdir(parents=True, exist_ok=True)
 MIGRATIONS_DIR.mkdir(parents=True, exist_ok=True)
+
+# if __name__ == '__main__' :
+#     print(f"Project Root: \t{PROJECT_ROOT}")
+#     print(f"Database directory: \t{DATABASE_DIR}")
+
