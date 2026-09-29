@@ -19,8 +19,9 @@ class SystemConfigManager:
         self.migrations_directory = self.database_directory / self.get("database", "migrations_directory")
         self.database_path = self.database_directory / self.get("database", "database_path")
 
-        self.user_asset_directory = self.project_root / self.get("assets", "user_assets_directory")
-        self.applications_export_directory = self.project_root / self.get("assets", "applications_export")
+
+        self.qualifications_source_directory = self.get("assets", "qualifications_source_directory")
+        self.applications_export_directory = self.get("assets", "applications_export_directory")
 
     def load(self):
         """Loads configuration parameters from disk safely."""

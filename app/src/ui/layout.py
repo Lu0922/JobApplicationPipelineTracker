@@ -25,3 +25,15 @@ def load_layout_state(config_path):
             return json.load(f)["layout_data"]
     except (json.JSONDecodeError, IOError):
         return None
+
+def update_json(config_path, category, key, value):
+    data = {}
+    try :
+        with open(config_path, "r") as f:
+            data = json.load(f)
+    except (json.JSONDecodeError, IOError) as e:
+        print(f"⚠️ Read error or corrupt JSON file. Re-initializing structure. Details: {e}")
+
+    data[f"{category}"][f"{key}"] = value
+    with open(config_path, "w") as f:
+        json.dump(data, f, indent=4)

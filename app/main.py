@@ -41,6 +41,7 @@ if __name__ == '__main__' :
     #         "company": "Department of Communities",
     #         "title": "Support Officer",
     #         "date": "2026-09-25",
+    #         "time": "16:00",
     #         "dept": "Technology Branch",
     #         "state": "Complete",
     #         "job_link": "FAKE_LINK",
@@ -51,6 +52,7 @@ if __name__ == '__main__' :
     #         "company": "Department of Justice",
     #         "title": "Information Release Support Officer",
     #         "date": "2026-09-28",
+    #         "time": "16:00",
     #         "dept": "Knowledge Information & Technology",
     #         "state": "Working on CV",
     #         "job_link": "FAKE_LINK",
@@ -59,7 +61,7 @@ if __name__ == '__main__' :
     #     }
     # ]
     # for job in live_pipeline_seeds :
-    #     database_engine.inject_new_job(job=job)
+    #     database_engine.insert_new_job(job=job)
 
     app = QApplication(sys.argv)
     window = JobTrackerWindow(config_manager=config_manager, database_engine=database_engine)

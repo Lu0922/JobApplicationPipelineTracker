@@ -1,9 +1,10 @@
 import sqlite3
 
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, Signal
 from PySide6.QtWidgets import QDockWidget, QListWidget, QVBoxLayout, QWidget, QListWidgetItem
 
 class DockWatchlist(QDockWidget) :
+    job_selected = Signal(int)
     def __init__(self, config_manager, parent=None) :
         super().__init__("Application Watchlist", parent)
         self.config_manager = config_manager
@@ -13,6 +14,9 @@ class DockWatchlist(QDockWidget) :
         self.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
 
         self.watchlist_view = QListWidget()
+
+        # 🔗 Internal Routing: Intercept list clicks inside this class
+        self.watchlist_view.itemClicked.connect(self._on_item_clicked)
 
         self.setObjectName("WatchlistDock")
         # 🎨 Style the list so entries look like spacious dashboard buttons
@@ -45,9 +49,9 @@ class DockWatchlist(QDockWidget) :
         """
         self.watchlist_view.clear()
         
-        for job_id, company, title, closing_date, status in jobs_list:
+        for job_id, company, title, closing_date, closing_time, status in jobs_list:
             # 1. Construct a clean, scannable text string for the row item
-            display_text = f"🎯 {title}\n🏢 {company}\n⏰ Closes: {closing_date}  |  📊 [{status}]"
+            display_text = f"📊 [{status}]\n🎯 {title}\n🏢 {company}\n⏰ Closes: {closing_date} - {closing_time}"
             
             # 2. Instantiate a clean layout node item
             item = QListWidgetItem(display_text)
@@ -58,16 +62,9 @@ class DockWatchlist(QDockWidget) :
             # 4. Inject the item into the visual list container hierarchy
             self.watchlist_view.addItem(item)
 
-    # TODO
-    def handle_job_selection(self, item):
-        # """Triggers automatically when an entry is clicked."""
-        # # Extract the hidden primary key integer directly from the UI node metadata
-        # job_id = item.data(Qt.UserRole)
-        
-        # # Securely fetch the complete dictionary record map for this specific item
-        # job_details = self.query_manager.get_job_by_id(job_id)
-        
-        # if job_details:
-        #     # Pass the data map directly into your Right Detail Dashboard dock panel to render
-        #     self.dock_details.render_job_profile(job_details)
-        print(item.data(Qt.UserRole))
+    def _on_item_clicked(self, item):
+        """Internal callback that isolates the click event inside the module."""
+        job_id = item.data(Qt.UserRole)
+        if job_id is not None:
+            # 🚀 Broadcast the raw ID outward. The dock doesn't care who is listening!
+            self.job_selected.emit(job_id)

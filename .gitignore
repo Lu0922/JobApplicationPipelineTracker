@@ -9,6 +9,10 @@ venv
 
 # user credentials
 user_documents
+assets
 
 # output folder
-applications
+output_applications
+
+# sqlite database file
+*.db

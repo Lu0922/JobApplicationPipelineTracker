@@ -5,21 +5,22 @@ import json
 
 from src.config.commands import Commands
 
-def inject_new_job(config_manager, job: dict) -> Commands:
+def insert_new_job(database_path, job: dict) -> Commands:
     # Context manager handles opening/closing connection perfectly
-    with sqlite3.connect(config_manager.database_path) as connection:
+    with sqlite3.connect(database_path) as connection:
         cursor = connection.cursor()  # Safe cursor assignment
         
         try: 
             # 1. Corrected table name to 'watchlist' to match your schema
             cursor.execute("""
             INSERT INTO watchlist (
-                company, position_title, closing_date, department, progress_state, job_link, required_documents, custom_metadata
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+                company, position_title, closing_date, closing_time, department, progress_state, job_link, required_documents, custom_metadata
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
             """, (
                 job["company"],
                 job["title"],
                 job["date"],
+                job["time"],
                 job["dept"],
                 job["state"],
                 job["job_link"],

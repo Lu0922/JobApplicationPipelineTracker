@@ -1,11 +1,9 @@
--- Data Schema Configurations for JobApplicationPipelineTracker.
--- Defines tables, data integrity rules, and hybrid JSON stores.
-
 CREATE TABLE IF NOT EXISTS watchlist (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     company TEXT NOT NULL,
     position_title TEXT NOT NULL,
-    closing_date DATE NOT NULL,              
+    closing_date DATE NOT NULL,
+    closing_time TEXT NOT NULL,              
     department TEXT,
     job_link TEXT NOT NULL,
     progress_state TEXT DEFAULT 'TODO',      
