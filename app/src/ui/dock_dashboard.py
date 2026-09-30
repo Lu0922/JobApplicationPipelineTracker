@@ -19,7 +19,8 @@ class DockDashboard(QDockWidget):
         self.parent = parent
         self.setAllowedAreas(Qt.RightDockWidgetArea)
         self.setObjectName("DashBoardDock")
-        
+        self.setFeatures(QDockWidget.DockWidgetFeature.DockWidgetMovable | QDockWidget.DockWidgetFeature.DockWidgetFloatable)
+
         # Track the active primary key runtime context locally
         self.active_job_id = None
         

@@ -18,6 +18,7 @@ class DockEditPanel(QDockWidget):
         self.parent = parent
         self.setObjectName("EditPanelDock")
         self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose)
+        self.setAttribute(Qt.WidgetAttribute.WA_AlwaysStackOnTop)
         self.destroyed.connect(self.clear_dock_reference)
 
         self.active_job_id = active_job_id
@@ -44,6 +45,7 @@ class DockEditPanel(QDockWidget):
         closing_time_layout = QHBoxLayout()
         self.closing_date = QDateEdit(QDate.currentDate())
         self.closing_date.setCalendarPopup(True)
+        self.closing_date.setDisplayFormat("yyyy/MM/dd")
         self.closing_time = QTimeEdit(QTime.currentTime())
         self.closing_time.setDisplayFormat("HH:mm")
         closing_time_layout.addWidget(self.closing_date)
@@ -60,7 +62,8 @@ class DockEditPanel(QDockWidget):
 
         # 3. Add rows to the form (Label Text, Widget/Layout)
         form_layout.addRow("🏢 Company Name:", self.txt_company_name)
-        form_layout.addRow("🔴 Position Title:", self.txt_department_name)
+        form_layout.addRow("🔴 Department:", self.txt_department_name)
+        form_layout.addRow("🔴 Position Title:", self.txt_position_title)
         form_layout.addRow("🕒 Closing Time:", closing_time_layout)
         form_layout.addRow("🔗 Job Link:", self.txt_job_link)
         form_layout.addRow("📁 Required Documents:", self.txt_required_documents)
@@ -77,7 +80,7 @@ class DockEditPanel(QDockWidget):
 
         payload["company"] = self.txt_company_name.text().replace(' ', '_')
         payload["title"] = self.txt_position_title.text().replace(' ', '_')
-        payload["date"] = self.closing_date.date().toString("dd/MM/yyyy")
+        payload["date"] = self.closing_date.date().toString("yyyy/MM/dd")
         payload["time"] = self.closing_time.time().toString("HH:mm")
         payload["dept"] = self.txt_department_name.text().replace(' ', '_')
         payload["job_link"] = self.txt_job_link.text().strip()

@@ -21,6 +21,9 @@ class DockPackaging(QDockWidget):
         self.logger = config_manager.logger
         self.parent = parent   
         self.setObjectName("PackagingDock")
+        self.setFeatures(QDockWidget.DockWidgetFeature.DockWidgetMovable | QDockWidget.DockWidgetFeature.DockWidgetFloatable)
+
+        # self.setAttribute(Qt.WidgetAttribute)
         
         # Runtime Data Triggers
         self.active_job_context = None
@@ -31,7 +34,7 @@ class DockPackaging(QDockWidget):
 
         # 🔌 Automatically load saved paths from your centralized JSON file on boot
         self.load_persisted_paths()
-        self.update_job_context()
+        self.update_job_context(self.active_job_context)
         
     def init_ui(self):
         container = QWidget()
@@ -83,8 +86,9 @@ class DockPackaging(QDockWidget):
         self.setWidget(container)
 
     # ─── CONTEXT INTERACTION CAPTURE PADS ──────────────────────────────
-    def update_job_context(self):
+    def update_job_context(self, job_details):
         """Receives active pipeline metadata when row selection triggers are fired."""
+        self.active_job_context = job_details
         self.lbl_counter.setText(
             f"Current Application Index Count: {self.current_index} "
             f"(Folder prefix will map to: {self.current_index + 1})"
@@ -126,7 +130,6 @@ class DockPackaging(QDockWidget):
                 
         except OSError as e:
             print(f"⚠️ Directory scanning access error encountered: {e}")
-
 
     def _scan_output_directory(self, target_path_str: str):
         current_index = 0

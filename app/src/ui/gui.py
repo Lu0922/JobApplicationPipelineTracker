@@ -27,8 +27,8 @@ class JobTrackerWindow(QMainWindow):
         self.setObjectName("MainWindow")
 
         # 1. Initialize structural layout panels first so they exist in memory
-        central_widget = QWidget()
-        self.setCentralWidget(central_widget)
+        # central_widget = QWidget()
+        # self.setCentralWidget(central_widget)
         self.init_dock_ui()
         # self.init_toolbar_ui()
         
@@ -53,7 +53,6 @@ class JobTrackerWindow(QMainWindow):
         self.dock_dashboard.delete_requested.connect(self.handle_database_deletion_request)
         self.dock_dashboard.edit_requested.connect(self.handle_database_update_request)
         self.dock_insertpanel.form_complete.connect(self.insert_new_job)
-        
 
         # Run the initial data render on boot layer
         self.refresh_ui_data()
@@ -114,6 +113,7 @@ class JobTrackerWindow(QMainWindow):
         self.dock_editpanel = DockEditPanel(config_manager=self.config_manager, active_job_id=job_id, job_details=job_details)
         self.dock_editpanel.form_complete.connect(self.update_active_job)
         self.tabifyDockWidget(self.dock_packaging, self.dock_editpanel)
+        # self.dock_editpanel.raise_()
 
     def update_active_job(self, job_id: int, payload: dict) :
         self.database_engine.update_job_by_id(job_id=job_id, payload=payload)
@@ -125,7 +125,7 @@ class JobTrackerWindow(QMainWindow):
         if job_details:
             self.dock_dashboard.render_job_profile(job_details)
             # Pipe active row dictionary contexts and runtime database counter metrics directly down into your packaging system!
-            self.dock_packaging.update_job_context()
+            self.dock_packaging.update_job_context(job_details)
 
     def insert_new_job(self, payload: dict) :
         # from insert panel to database

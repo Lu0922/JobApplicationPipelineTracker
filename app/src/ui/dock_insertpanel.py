@@ -17,6 +17,8 @@ class DockInsertPanel(QDockWidget):
         self.logger = self.config_manager.logger
         self.parent = parent
         self.setObjectName("InsertPanelDock")
+        self.setFeatures(QDockWidget.DockWidgetFeature.DockWidgetMovable | QDockWidget.DockWidgetFeature.DockWidgetFloatable)
+
 
         self.init_ui()
         # self.insert_test_data()
@@ -44,6 +46,7 @@ class DockInsertPanel(QDockWidget):
 
         closing_time_layout = QHBoxLayout()
         self.closing_date = QDateEdit(QDate.currentDate())
+        self.closing_date.setDisplayFormat("yyyy/MM/dd")
         self.closing_date.setCalendarPopup(True)
         self.closing_time = QTimeEdit(QTime.currentTime())
         self.closing_time.setDisplayFormat("HH:mm")
@@ -68,7 +71,8 @@ class DockInsertPanel(QDockWidget):
 
         # 3. Add rows to the form (Label Text, Widget/Layout)
         form_layout.addRow("🏢 Company Name:", self.txt_company_name)
-        form_layout.addRow("🔴 Position Title:", self.txt_department_name)
+        form_layout.addRow("🔴 Department:", self.txt_department_name)
+        form_layout.addRow("🔴 Position Title:", self.txt_position_title)
         form_layout.addRow("🕒 Closing Time:", closing_time_layout)
         form_layout.addRow("🔗 Job Link:", self.txt_job_link)
         form_layout.addRow("📁 Required Documents:", self.txt_required_documents)
@@ -93,7 +97,7 @@ class DockInsertPanel(QDockWidget):
         """
         payload["company"] = self.txt_company_name.text().replace(' ', '_')
         payload["title"] = self.txt_position_title.text().replace(' ', '_')
-        payload["date"] = self.closing_date.date().toString("dd/MM/yyyy")
+        payload["date"] = self.closing_date.date().toString("yyyy/MM/dd")
         payload["time"] = self.closing_time.time().toString("HH:mm")
         payload["dept"] = self.txt_department_name.text().replace(' ', '_')
 

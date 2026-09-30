@@ -27,7 +27,7 @@ def setup_config_manager():
     config_manager.set_logger(logger)
 
     logger.info(f"🚀 [Main] System: {system_name} Launching...")
-    # logger.debug(f"🔧 [Main] Configuration loaded: {config_manager.config_data}")
+    logger.debug(f"🔧 [Main] Configuration loaded: {config_manager.config_data}")
 
     return config_manager
 
@@ -35,6 +35,13 @@ if __name__ == '__main__' :
     config_manager = setup_config_manager()
     database_engine = Database(config_manager=config_manager)
     database_engine.run_migration()
+
+    app = QApplication(sys.argv)
+    window = JobTrackerWindow(config_manager=config_manager, database_engine=database_engine)
+    window.show()
+    sys.exit(app.exec())
+
+
 
     # live_pipeline_seeds = [
     #     {
@@ -62,10 +69,3 @@ if __name__ == '__main__' :
     # ]
     # for job in live_pipeline_seeds :
     #     database_engine.insert_new_job(job=job)
-
-    app = QApplication(sys.argv)
-    window = JobTrackerWindow(config_manager=config_manager, database_engine=database_engine)
-    window.show()
-    sys.exit(app.exec())
-
-    

@@ -12,6 +12,8 @@ class DockWatchlist(QDockWidget) :
 
         # Left Dock Widget
         self.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
+        self.setFeatures(QDockWidget.DockWidgetFeature.DockWidgetMovable | QDockWidget.DockWidgetFeature.DockWidgetFloatable)
+
 
         self.watchlist_view = QListWidget()
 
