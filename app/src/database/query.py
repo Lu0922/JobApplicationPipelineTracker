@@ -8,7 +8,7 @@ def load_watchlist(database_path) -> dict:
         cursor = connection.cursor()
 
         query = """
-                SELECT id, company, position_title, closing_date, closing_time, progress_state
+                SELECT id, company, position_title, closing_date, closing_time, progress_state, application_type
                 FROM watchlist 
                 ORDER BY closing_date ASC;
                 """ 
@@ -19,7 +19,7 @@ def load_watchlist(database_path) -> dict:
 def get_job_by_id(database_path: str, job_id: int) -> dict | None:
     """Safely extracts a complete application data map using a targeted ID."""
     query = """
-            SELECT id, company, position_title, closing_date, closing_time, department, job_link, progress_state, required_documents, custom_metadata
+            SELECT id, company, position_title, closing_date, closing_time, department, job_link, progress_state, required_documents, custom_metadata, application_type
             FROM watchlist
             WHERE id = ?;
             """
@@ -40,6 +40,7 @@ def get_job_by_id(database_path: str, job_id: int) -> dict | None:
                 "id": row["id"],
                 "company": row["company"],
                 "title": row["position_title"],
+                "application_type": row["application_type"],
                 "closing_date": row["closing_date"],
                 "closing_time": row["closing_time"],
                 "job_link": row["job_link"],
@@ -108,6 +109,7 @@ def update_job_by_id(database_path: str, job_id: int, payload: dict) :
                         UPDATE watchlist
                         SET company = ?,
                             position_title = ?,
+                            application_type = ?,
                             closing_date = ?,
                             closing_time = ?,
                             department = ?,
@@ -120,6 +122,7 @@ def update_job_by_id(database_path: str, job_id: int, payload: dict) :
                 cursor.execute(query, (
                     payload["company"],
                     payload["title"],
+                    payload["type"],
                     payload["date"],
                     payload["time"],
                     payload["dept"],

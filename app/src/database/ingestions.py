@@ -14,8 +14,8 @@ def insert_new_job(database_path, job: dict) -> Commands:
             # 1. Corrected table name to 'watchlist' to match your schema
             cursor.execute("""
             INSERT INTO watchlist (
-                company, position_title, closing_date, closing_time, department, progress_state, job_link, required_documents, custom_metadata
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
+                company, position_title, closing_date, closing_time, department, progress_state, job_link, required_documents, custom_metadata, application_type
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
             """, (
                 job["company"],
                 job["title"],
@@ -25,7 +25,8 @@ def insert_new_job(database_path, job: dict) -> Commands:
                 job["state"],
                 job["job_link"],
                 job["docs"],
-                json.dumps(job["meta"])  # Serialises dictionary to valid JSON string text
+                json.dumps(job["meta"]),  # Serialises dictionary to valid JSON string text
+                job["type"]  # Include the application type in the insert statement
             ))
             
             # Explicit commit preserves stability

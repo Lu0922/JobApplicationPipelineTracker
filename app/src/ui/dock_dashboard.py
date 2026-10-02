@@ -58,7 +58,7 @@ class DockDashboard(QDockWidget):
         state_layout = QHBoxLayout()
         state_layout.addWidget(QLabel("Pipeline Status:"))
         self.combo_status = QComboBox()
-        self.combo_status.addItems(["TODO", "Working on CV", "Complete"])
+        self.combo_status.addItems(["TODO", "Working on CV", "Applied", "Interviewing", "Offer Received", "Rejected", "Inactive"])
         self.combo_status.currentTextChanged.connect(self._on_status_changed)
         state_layout.addWidget(self.combo_status)
         layout.addLayout(state_layout)
@@ -94,9 +94,14 @@ class DockDashboard(QDockWidget):
             line = f"<b>{key}:</b>\t\t{value}<br>"
             notes += line
 
+        # 🌐 ENABLE EXTERNAL LINKS OPENING NATIVELY VIA OS DEFAULT BROWSER
+        self.lbl_meta.setOpenExternalLinks(True)
+        self.lbl_meta.setTextFormat(Qt.RichText)  # Explicitly enforce HTML renderer tracking
+
         # Clean string layout for JSON metadata fields
         meta_html = f"""
         <b>Department/Branch:</b>{job['department'] or 'Not Specified'}<br>
+        <b>Application Type:</b> {job['application_type']}<br>
         <b>Closing Date Limit:</b> <span style='color: #DC2626;'>{job['closing_date']} : {job['closing_time']}</span><br>
         <b>Link:</b><a href="{job['job_link']}">{job['job_link']}</a><br><br>
         <b>Custom Notes:</b><br><br>

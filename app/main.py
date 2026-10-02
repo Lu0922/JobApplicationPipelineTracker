@@ -34,7 +34,7 @@ def setup_config_manager():
 if __name__ == '__main__' :
     config_manager = setup_config_manager()
     database_engine = Database(config_manager=config_manager)
-    database_engine.run_migration()
+    # database_engine.run_migration()
 
     app = QApplication(sys.argv)
     window = JobTrackerWindow(config_manager=config_manager, database_engine=database_engine)

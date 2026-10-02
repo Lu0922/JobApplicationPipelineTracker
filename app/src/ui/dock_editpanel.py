@@ -5,7 +5,7 @@ from PySide6.QtCore import Qt, Signal, QDate, QTime
 from PySide6.QtWidgets import (
     QDockWidget, QWidget, QFormLayout, QLineEdit, QTextEdit,
     QPushButton, QMessageBox, QHBoxLayout, QLabel,
-    QDateEdit, QTimeEdit
+    QDateEdit, QTimeEdit, QComboBox
 )
 
 class DockEditPanel(QDockWidget):
@@ -42,6 +42,9 @@ class DockEditPanel(QDockWidget):
         self.txt_position_title = QLineEdit()
         self.txt_position_title.setPlaceholderText("Enter Position Title")
 
+        self.txt_application_type =  QComboBox()
+        self.txt_application_type.addItems(["Single", "Pool", "Registered", "Other"])
+
         closing_time_layout = QHBoxLayout()
         self.closing_date = QDateEdit(QDate.currentDate())
         self.closing_date.setCalendarPopup(True)
@@ -64,6 +67,7 @@ class DockEditPanel(QDockWidget):
         form_layout.addRow("🏢 Company Name:", self.txt_company_name)
         form_layout.addRow("🔴 Department:", self.txt_department_name)
         form_layout.addRow("🔴 Position Title:", self.txt_position_title)
+        form_layout.addRow("🔴 Application Type:", self.txt_application_type)
         form_layout.addRow("🕒 Closing Time:", closing_time_layout)
         form_layout.addRow("🔗 Job Link:", self.txt_job_link)
         form_layout.addRow("📁 Required Documents:", self.txt_required_documents)
@@ -80,6 +84,7 @@ class DockEditPanel(QDockWidget):
 
         payload["company"] = self.txt_company_name.text().replace(' ', '_')
         payload["title"] = self.txt_position_title.text().replace(' ', '_')
+        payload["type"] = self.txt_application_type.currentText().upper()
         payload["date"] = self.closing_date.date().toString("yyyy/MM/dd")
         payload["time"] = self.closing_time.time().toString("HH:mm")
         payload["dept"] = self.txt_department_name.text().replace(' ', '_')
@@ -110,6 +115,7 @@ class DockEditPanel(QDockWidget):
         self.txt_company_name.setText(job["company"])
         self.txt_department_name.setText(job["department"])
         self.txt_position_title.setText(job["title"])
+        self.txt_application_type.setCurrentText(job["application_type"])
 
         closing_date_obj = QDate.fromString(job["closing_date"], "yyyy-MM-dd")
         closing_time_obj = QTime.fromString(job["closing_time"], "HH:mm")

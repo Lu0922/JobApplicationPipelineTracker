@@ -1,11 +1,6 @@
-import sys
-import os
-import json
-import sqlite3
-from pathlib import Path
 from PySide6.QtCore import Qt, QByteArray
 from PySide6.QtWidgets import (
-        QMainWindow, QWidget, QDockWidget, QListWidget
+        QMainWindow
 )
 from PySide6.QtGui import QCloseEvent
 
@@ -113,7 +108,7 @@ class JobTrackerWindow(QMainWindow):
         self.dock_editpanel = DockEditPanel(config_manager=self.config_manager, active_job_id=job_id, job_details=job_details)
         self.dock_editpanel.form_complete.connect(self.update_active_job)
         self.tabifyDockWidget(self.dock_packaging, self.dock_editpanel)
-        # self.dock_editpanel.raise_()
+        self.refresh_ui_data()
 
     def update_active_job(self, job_id: int, payload: dict) :
         self.database_engine.update_job_by_id(job_id=job_id, payload=payload)
