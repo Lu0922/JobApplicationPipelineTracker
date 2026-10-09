@@ -69,6 +69,9 @@ class DockWatchlist(QDockWidget) :
             if application_type.upper() != "SINGLE":
                 item.setForeground(QColor("#4F46E5"))  # Purple for non-single applications
 
+            if status.upper() != "TODO" :
+                item.setForeground(QColor("#999999"))
+
             # 3. 🛡️ Crucial Data Link: Pack the exact Primary Key database integer into the UI node memory
             item.setData(Qt.UserRole, job_id)
             
